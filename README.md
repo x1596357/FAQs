@@ -1,0 +1,2 @@
+# FAQs
+Information worth noted 
