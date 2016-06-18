@@ -1,0 +1,6 @@
+{
+  "name": "Faqs",
+  "tagline": "Information worth noted ",
+  "body": "# FAQs\r\nJust some questions and answers I want to keep around. I don't want it to be as heavy as blog. You might find some answers here.\r\n\r\n#### Why linux man pages are not complete?\r\n\r\ntry update mandb, issue mandb command with root privilidge.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
