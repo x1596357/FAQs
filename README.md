@@ -79,6 +79,43 @@ You should have `./configure` scripts after this. If transfer these files to oth
   # cd source_dir/
   # patch -p1 < ../%{patchname}.patch
   ```
+  
+#### 4. How to fix my Linux system even if `boot` partition is destroyed?
 
+ 1. Insert a livecd usbstick or dvd (I am using Fedora here). You search how to create one.
 
+ 2. Mount your need-to-be-fix system at `/mnt`
 
+ 3. Format and mount `boot` partition or make a `boot` folder in `/`
+ ```
+ # mkfs.ext4 /dev/sdx?(where boot partition is)
+ # mount /dev/sdx? /mnt/boot
+ ```
+ or
+ 
+ `# cd /mnt/ && mkdir /mnt/boot/`
+ 
+ 3. Install kernel,dracut(for mkinitrd) and grub2(for grub2-install and grub2-mkconfig),you need to connect to the Internet. Or you can install downloaded rpms of them.
+ 
+ `sudo dnf install --installroot=/mnt kernel grub2 dracut`
+
+ You should have something like `vmlinuz` in your `/mnt/boot` directory
+ 
+ 4. Chroot
+ ```
+ # mount --bind /dev/ /mnt/dev/
+ # mount --bind /sys/ /mnt/sys/
+ # mount --bind /proc /mnt/proc/
+ # chroot /mnt
+ ```
+ 5. Make init ramdisk using mkinitrd, you can try `mkinitrd` get the prompt.
+ 
+ `# mkinitrd /boot/initramfs-4.5.5-201.fc23.x86_64.img 4.5.5-201.fc23.x86_64`
+
+ 6. Install bootloader
+ ```
+ # grub2-install /dev/sdx(Harddisk device, not partition)
+ # grub2-mkconfig > /boot/grub2/grub.cfg
+ ```
+ You should see some entries is there in `grub.cfg`. You might want to check `/etc/fstab` is correct and use `sudo chmod 755 /mnt` to make sure root have the corrent permission setting. You might have to temporarily disable `selinux` by setting `SELINUX=disabled` in `/etc/selinux/config`
+ 
