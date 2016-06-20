@@ -1,9 +1,11 @@
 # FAQs
 Just some questions and answers I want to keep around. I don't want it to be as heavy as blog. You might find some answers here. If you find this page is too long to read, try using find(Ctrl+F).
 
-#### 1. Why linux man pages are not complete?
+#### 1. How come my linux man pages are not complete?
 
-try update mandb, issue mandb command with root privilidge.
+try update mandb, issue `mandb` command with root privilidge.
+
+`sudo mandb`
 
 #### 2. How to use automake and autoconf?
 1. create {src,docs,examples,...} folder in your working directory
