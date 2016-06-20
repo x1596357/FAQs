@@ -99,7 +99,7 @@ You should have `./configure` scripts after this. If transfer these files to oth
  
  3. Install kernel,dracut(for mkinitrd) and grub2(for grub2-install and grub2-mkconfig),you need to connect to the Internet. Or you can install downloaded rpms of them.
  
- `sudo dnf install --installroot=/mnt kernel grub2 dracut`
+ `sudo dnf install --installroot /mnt kernel grub2 dracut`
 
  You should have something like `vmlinuz` in your `/mnt/boot` directory
  
