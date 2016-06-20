@@ -31,12 +31,110 @@
         <h1>
 <a id="faqs" class="anchor" href="#faqs" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FAQs</h1>
 
-<p>Just some questions and answers I want to keep around. I don't want it to be as heavy as blog. You might find some answers here.</p>
+<p>Just some questions and answers I want to keep around. I don't want it to be as heavy as blog. You might find some answers here. If you find this page is too long to read, try using find(Ctrl+F).</p>
 
 <h4>
-<a id="why-linux-man-pages-are-not-complete" class="anchor" href="#why-linux-man-pages-are-not-complete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why linux man pages are not complete?</h4>
+<a id="1-why-linux-man-pages-are-not-complete" class="anchor" href="#1-why-linux-man-pages-are-not-complete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Why linux man pages are not complete?</h4>
 
 <p>try update mandb, issue mandb command with root privilidge.</p>
+
+<h4>
+<a id="2-how-to-use-automake-and-autoconf" class="anchor" href="#2-how-to-use-automake-and-autoconf" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. How to use automake and autoconf?</h4>
+
+<ol>
+<li>
+<p>create {src,docs,examples,...} folder in your working directory</p>
+
+<p><code># mkdir src</code></p>
+</li>
+<li>
+<p>create your source code</p>
+
+<p><code># vi src/hello.c</code></p>
+</li>
+<li>
+<p>run <code>autoscan</code> to create configure.ac</p>
+
+<pre><code># autoscan
+# mv configure.scan configure.ac
+</code></pre>
+</li>
+<li>fill in information of your program in <code>AC_INIT()</code>, add <code>AM_INIT_AUTMAKE</code> the next line, and add output files <code>Makefile</code> and <code>src/Makefile</code> and etc to <code>AC_OUTPUT()</code> at the end. Static and dynamic libraries need some other informations. Check other material.
+<code>
+AC_INIT(hello,1.0,hello@hello.com)
+AM_INIT_AUTOMAKE
+...
+AC_OUTPUT(Makefile src/Makefile)
+</code>
+</li>
+<li>
+<p>create <code>Makefile.am</code> in your working directory and in subdirectories like <code>src/</code> accordingly(applications or libraries).</p>
+
+<p><code># vi Makefile.am</code></p>
+
+<p>with content</p>
+
+<pre><code>AUTOMAKE_OPTIONS = foreign
+SUBDIRS = src
+</code></pre>
+
+<p><code># vi src/Makefile.am</code></p>
+
+<p>with content(application)</p>
+
+<pre><code>bin_PROGRAMS = hello
+hello_SOURCES = hello.c
+</code></pre>
+
+<p>with content(dynamic),check other materials for how to write for dynamic libraries and static libraries</p>
+
+<pre><code>bin_PROGRAMS = hello
+hello_SOURCES = hello.c
+</code></pre>
+</li>
+<li>
+<p>use <code>libtoolize</code> if you are creating libraries</p>
+
+<p><code># libtoolize -f -c</code></p>
+</li>
+<li>
+<p>run <code>aclocal</code>,<code>autoheader</code>,<code>automake</code>,<code>autoconf</code> in order</p>
+
+<pre><code># aclocal
+# autoheader
+# automake -a
+# autoconf
+</code></pre>
+
+<p>You should have <code>./configure</code> scripts after this. If transfer these files to other system, you may want to run <code>autoreconf</code> and redo #7. Now you can do <code>./configure;make;make install;make clean;</code></p>
+</li>
+</ol>
+
+<h4>
+<a id="3-how-to-create-and-apply-patch" class="anchor" href="#3-how-to-create-and-apply-patch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. How to create and apply patch?</h4>
+
+<ol>
+<li>
+<p>create</p>
+
+<p><code># diff -Nur old/ new/ &gt;%{name}-%{version}-%{fixwhat}.patch</code></p>
+
+<p>eg.</p>
+
+<p><code># diff -Nur hello/ new_hello/ &gt; hello-1.0-fixprint.patch</code></p>
+</li>
+<li>
+<p>apply </p>
+
+<p><code># patch -p0 &lt; %{patchname}.patch</code></p>
+
+<p>or this one. Recommand following one because base directory name may differ.</p>
+
+<pre><code># cd source_dir/
+# patch -p1 &lt; ../%{patchname}.patch
+</code></pre>
+</li>
+</ol>
       </section>
     </div>
 
