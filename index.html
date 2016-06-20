@@ -135,6 +135,55 @@ hello_SOURCES = hello.c
 </code></pre>
 </li>
 </ol>
+
+<h4>
+<a id="4-how-to-fix-my-linux-system-even-if-boot-partition-is-destroyed" class="anchor" href="#4-how-to-fix-my-linux-system-even-if-boot-partition-is-destroyed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. How to fix my Linux system even if <code>boot</code> partition is destroyed?</h4>
+
+<ol>
+<li><p>Insert a livecd usbstick or dvd (I am using Fedora here). You search how to create one.</p></li>
+<li><p>Mount your need-to-be-fix system at <code>/mnt</code></p></li>
+<li>
+<p>Format and mount <code>boot</code> partition or make a <code>boot</code> folder in <code>/</code></p>
+
+<pre><code># mkfs.ext4 /dev/sdx?(where boot partition is)
+# mount /dev/sdx? /mnt/boot
+</code></pre>
+
+<p>or</p>
+
+<p><code># cd /mnt/ &amp;&amp; mkdir /mnt/boot/</code></p>
+</li>
+<li>
+<p>Install kernel,dracut(for mkinitrd) and grub2(for grub2-install and grub2-mkconfig),you need to connect to the Internet. Or you can install downloaded rpms of them.</p>
+
+<p><code>sudo dnf install --installroot=/mnt kernel grub2 dracut</code></p>
+
+<p>You should have something like <code>vmlinuz</code> in your <code>/mnt/boot</code> directory</p>
+</li>
+<li>
+<p>Chroot</p>
+
+<pre><code># mount --bind /dev/ /mnt/dev/
+# mount --bind /sys/ /mnt/sys/
+# mount --bind /proc /mnt/proc/
+# chroot /mnt
+</code></pre>
+</li>
+<li>
+<p>Make init ramdisk using mkinitrd, you can try <code>mkinitrd</code> get the prompt.</p>
+
+<p><code># mkinitrd /boot/initramfs-4.5.5-201.fc23.x86_64.img 4.5.5-201.fc23.x86_64</code></p>
+</li>
+<li>
+<p>Install bootloader</p>
+
+<pre><code># grub2-install /dev/sdx(Harddisk device, not partition)
+# grub2-mkconfig &gt; /boot/grub2/grub.cfg
+</code></pre>
+
+<p>You should see some entries is there in <code>grub.cfg</code>. You might want to check <code>/etc/fstab</code> is correct and use <code>sudo chmod 755 /mnt</code> to make sure root have the corrent permission setting. You might have to temporarily disable <code>selinux</code> by setting <code>SELINUX=disabled</code> in <code>/etc/selinux/config</code></p>
+</li>
+</ol>
         </section>
 
         <aside id="sidebar">
