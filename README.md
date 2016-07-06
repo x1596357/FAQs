@@ -121,3 +121,8 @@ You should have `./configure` scripts after this. If transfer these files to oth
  ```
  You should see some entries is there in `grub.cfg`. You might want to check `/etc/fstab` is correct and use `sudo chmod 755 /mnt` to make sure root have the corrent permission setting. You might have to temporarily disable `selinux` by setting `SELINUX=disabled` in `/etc/selinux/config`
  
+#### 5. grep string in files?
+
+ `grep -nrw <FOLDER_NAME> -e "STRING"` eg:
+ 
+ `grep -nrw <>`
