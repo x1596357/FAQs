@@ -126,3 +126,8 @@ You should have `./configure` scripts after this. If transfer these files to oth
  `grep -nrw <FOLDER_NAME> -e "STRING"` eg:
  
  `grep -nrw <>`
+
+#### 6. gcc on Fedora 64bit doesn't compile 32bit program?
+
+ `#sudo dnf install -y glibc-devel.i686 libgcc.i686` 
+ 
